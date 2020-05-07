@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta chartset="utf-8">
+  <title>Demo CE-232</title>
+  <script src="jquery.js"></script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script src="xuly.js"></script>
+  <script src="index.js"></script>
+  <link rel="stylesheet" type="text/css" href="layoutLogin.css"/>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <h2>WELL COME TO UIT</h2>
+  <form action="/login" method="post">
+    <div class="imgcontainer">
+      <img src="logo-uit.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+        <script type="text/javascript">
+          var status = <%- status %>;
+          
+          if(status=='1' || status == 1)
+          {
+              alert("Login Successfull");
+              window.location.href = "http://localhost:3000/home";
+          }
+          else if ((status=='0' || status == 0))
+          {
+            alert("Login");
+            window.location.href = "http://localhost:3000/login";
+          }
+          else
+          {
+          }
+        </script>
+      <label for="uname"><b>Username</b></label>
+      <input type="text" id="un" placeholder="Enter Username" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" id ="pw" placeholder="Enter Password" name="psw" required>
+
+      <button type="submit" ; return false ; id="btnLogin";>Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a  href="http://localhost:3000/home">password?</a></span>
+    </div>
+  </form>
+</body>
+</html>

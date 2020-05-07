@@ -1,17 +1,132 @@
 body{background-image: url('anh1.jpg')}
-#wraper{with:600px;margin: :auto}
-#left,#right:{min-height: 3000px}
-#left{width: 30%; float:left;}
-#right{width: 70%;float: right;}
-#boxTitle{border: solid 1px black; padding: 10px ;text-align: center; color: red;background-color: green;font-size:200%;}
-#boxMode{background-color:pink;border: :solid 2px black;border-top: none;padding: :5px;text-align: center;color: yellow;font-size:150%;}
-#btnModeRain{background-color: #0bd44e; text-align: center;font-size:120%;}
-#btnModeLove{background-color: #d3d622; text-align: center;font-size:120%;}
-#btnModePlan{background-color: #eb4034; text-align: center;font-size:120%;}
-#btnModeDomino{background-color: #191fc2; text-align: center;font-size:120%;}
-#btnMHX{background-color: #e88310; text-align: center;font-size:120%;}
-#btnOff{background-color: #a61297; text-align: center;font-size:120%;}
-#sayHi{font-family: Helvetica, Arial, Tahoma, sans-serif;font-size: 250%;color: red; text-align:center}
-#BUTTON{text-align: center;padding: 100px}
-#hinhanh{width: 100px; height: 100px}
-#btnBolide{background-color: #dbbf1d; text-align: center;font-size:120%;}
+#wraper{
+	with:600px;
+	margin:center;
+}
+#left,#right:{
+	min-height: 1000px;
+}
+#left{
+	width: 25%;
+	float:left;
+}
+header {
+  padding: 10px;
+  text-align: center;
+  font-size: 35px;
+  color: red;
+}
+#Top{
+	padding-left: 150px;
+	width: 70%;
+	float:left;
+}
+#bottom: {
+	width: 50%;
+	float:left;
+}
+#middle{
+	width: 50%;
+	float:left;
+}
+#right{
+	width: 20%;
+	float: right;
+	text-align: center; 
+	font-size:200%;
+	color: green;
+}
+#boxTitle{
+	border: solid 1px black;
+	padding: 10px ;
+	text-align: center; 
+	color: red;
+	background-color: green;
+	font-size:200%;
+}
+#Notificate{
+	border: solid 1px black;
+	padding: 10px ;
+	text-align: center; 
+	color: red;
+	background-color: green;
+	font-size:200%;
+}
+
+#warning{
+	background-color: #1bc9d1;
+	border:solid 2px black;
+	border-top: none;
+	padding:5px;
+	text-align: center;
+	color: yellow;
+	font-size:150%;
+}
+#fanMode{
+	background-color: #1bc9d1;
+	border:solid 2px black;
+	border-top: none;
+	padding:5px;
+	text-align: center;
+	color: yellow;
+	font-size:150%;
+}
+#chart_div{
+	float: center;
+	border-top: none;
+	padding-left: 200px;
+	font-size:100%;
+}
+#lightMode{
+	background-color: #1bc9d1;
+	border:solid 2px black;
+	border-top: none;
+	padding: :5px;
+	text-align: center;
+	color: yellow;
+	font-size:150%;
+}
+#btnLightOn{
+	background-color: #0bd44e; 
+	text-align: center;
+	font-size:120%;
+}
+
+#btnLightOff{background-color: #d3d622; 
+	text-align: center;
+	font-size:120%;
+}
+
+#btnFanOn{
+	background-color: #eb4034; 
+	text-align: center;
+	font-size:120%;
+}
+#btnFanOff{
+	background-color: #191fc2;
+ 	text-align: center;
+ 	font-size:120%;
+ }
+#sayHi{
+	font-family: Helvetica, Arial, Tahoma, sans-serif;
+	font-size: 100%;
+	color: red; 
+	text-align:center
+}
+#BUTTON{
+	text-align: center;
+	padding: 100px;
+}
+#image{width: 100px; 
+	height: 100px;
+}
+#idTemp{
+	background-color: #1bc9d1;
+	border:solid 2px black;
+	border-top: none;
+	padding:5px;
+	text-align: center;
+	color: yellow;
+	font-size:150%;
+
+}

@@ -1,80 +1,82 @@
-var socket = io("https://ledcube2019.herokuapp.com/")
+var socket = io("localhost:3000");
 
 $(document).ready(function()
 {
-	$("#btnModeRain").click(function()
+	//console.log("aaa");
+	$("#btnLightOn").click(function()
 	{
-		socket.emit("CLIENT-SEND-MODE-RAIN")
+		socket.emit("CLIENT-SEND-LIGHT-ON",{Temp:"20",AR:"1"});
 	})
-	$("#btnModeLove").click(function()
+	$("#btnLightOff").click(function()
 	{
-		socket.emit("CLIENT-SEND-MODE-LOVE")
+		//alert("cuuuu");
+		socket.emit("CLIENT-SEND-LIGHT_OFF");
 	})
-	$("#btnModePlan").click(function()
+	$("#btnFanOn").click(function()
 	{
-		socket.emit("CLIENT-SEND-MODE-PLAN")
+		socket.emit("CLIENT-SEND-FAN-ON");
 	})
-	$("#btnModeDomino").click(function()
+	$("#btnFanOff").click(function()
 	{
-		socket.emit("CLIENT-SEND-MODE-DOMINO")
+		socket.emit("CLIENT-SEND-FAN-OFF");
 	})
-	$("#btnOff").click(function()
+	/*
+	$("#btnLogin").click(function()
 	{
-		socket.emit("CLIENT-SEND-MODE-OFF")
-	})
-	$("#btnMHX").click(function()
-	{
-		socket.emit("CLIENT-SEND-MODE-MHX")
-	})
-	$("#btnBolide").click(function()
-	{
-		socket.emit("CLIENT-SEND-MODE-BOLIDE")
-	})
-
-
+		alert("login");
+		socket.emit("CLIENT-SEND-LOGIN", {uName: $("#un").val(), pWord: $("#pw").val()});
+	})*/
 })
 
-socket.on("SERVER-SEND-RAIN-MODE", function(data)
+socket.on("SERVER-SEND-FAN-ON", function(data)
 {
 	//alert("Đã chọn hiệu ứng mưa")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	$("#fanMode").html("");
+	$("#fanMode").html("[FAN]-Status: ON");
 })
-socket.on("SERVER-SEND-LOVE-MODE", function(data)
+socket.on("SERVER-SEND-FAN-OFF", function(data)
 {
 	//alert("Đã chọn hiệu ứng love")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	$("#fanMode").html("")
+	$("#fanMode").html("[FAN]-Status: OFF");
 })
-socket.on("SERVER-SEND-PLAN-MODE", function(data)
+socket.on("SERVER-SEND-LIGHT-ON", function(data)
 {
 	//alert("Đã chọn hiệu ứng plan")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	$("#lightMode").html("")
+	$("#lightMode").html("[LIGHT]-Status: ON ");
+	$("#idTemp").html("");
+	//$("#chart_div").html("Temperature : "+ data.Temp);
+	//document.getElementById('chart_div').setAttribute('temp', 20);
+	var con = document.getElementById('chart_div').setAttribute('temp');
+	alert(con);
 })
 
-socket.on("SERVER-SEND-DOMINO-MODE", function(data)
+socket.on("SERVER-SEND-LIGHT-OFF", function(data)
 {
 	//alert("Đã chọn hiệu ứng domino")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
-})
-socket.on("SERVER-SEND-OFF-MODE", function(data)
-{
-	//alert("Đã tắt tất cả cả đèn")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	$("#lightMode").html("")
+	$("#lightMode").html("[LIGHT]-Status: OFF ");
 })
 
-socket.on("SERVER-SEND-MHX-MODE", function(data)
+socket.on("SERVER-SEND-TEMP-HUM", function(data)
 {
-	//alert("Đã bật đèn ngủ")
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	//alert("Đã chọn hiệu ứng domino")
+	$("#idTemp").html("");
+
+	$("#idTemp").html("Temperature: " + data.Temp);
+	$("#idHumidity").html("");
+	
+	$("#idHumidity").html("Humidity: " + data.Humi);
+	//
 })
 
-socket.on("SERVER-SEND-BOLIDE-MODE",function(data)
+socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 {
-	$("#boxMode").html("")
-	$("#boxMode").html(data.MODE)
+	//alert("Đã chọn hiệu ứng domino")
+	$("#lightMode").html("")
+	$("#lightMode").html("[LIGHT]-Status: " + data.Light);
+	$("#fanMode").html("")
+	$("#fanMode").html("[FAN]-Status: " + data.Fan);
+	//
 })

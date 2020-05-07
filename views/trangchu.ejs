@@ -1,32 +1,90 @@
-<! client >
+<!DOCTYPE html>
 <html>
 <head>
 	<meta chartset="utf-8">
-	<title>LED CUBE MHX2019</title>
+	<title>Demo CE-232</title>
 	<script src="jquery.js"></script>
-	<script src="https://ledcube2019.herokuapp.com/socket.io/socket.io.js"></script>
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 	<script src="xuly.js"></script>
-	<link rel = "stylesheet" type="text/css" href="layout.css"/>
+	<script src="index.js"></script>
+	<link rel="stylesheet" type="text/css" href="layout.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <body>
 	<div id="wraper">
-		<div id="left">
-			<div id="boxTitle">Current MODE</div>
-			<div id="boxMode"></div>		
+		<div id= "Top">
+			<header>
+ 				<h2>HE THONG NHUNG KHONG DAY CE-232</h2>
+			</header>
 		</div>
 		<div id="right">
-			<div id="sayHi">MÙA HÈ XANH 2019 - VI ĐIỀU KHIỂN</div>
-			<div id="BUTTON">
-				<input type="button" id="btnModeRain" value="Mode_Rain"/>
-				<input type="button" id="btnModeLove" value="Mode_Love"/>
-				<input type="button" id="btnModePlan" value="Mode_Plan"/>
-				<input type="button" id="btnModeDomino" value="Mode_Domino"/>
-				<input type="button" id="btnMHX" value="Mode_MHX"/>
-				<input type="button" id="btnOff" value="Mode_Off"/>
-				<input type="button" id="btnBolide" value="Mode_SaoBang"/>
+		<script language="javascript" type="text/javascript"> 
+		dayName = new Array ("Sun","Mon","Tue","Wed","Thur","Fri","Sat") 
+		monName = new Array ("1","2","3","4","5","6","7","8","9","10","11","12") 
+		now = new Date 
+		document.write(now.getHours()+ ":" +now.getMinutes()+dayName[now.getDay()]+ ", " +now.getDate()+ "-" +monName[now.getMonth()]+ "-" +now.getFullYear()+ "</b>")                                     
+		</script>
+			<div id="sayHi">Hello ducxd
 			</div>
-
 		</div>
+		<div id="left">
+			<div id="boxTitle">STATUS</div>
+				<div id="lightMode"> LIGHT</div>	
+				<div id="fanMode"> FAN</div>
+			<div id="Notificate">NOTIFICATE</div>
+				<div id="idTemp"></div>
+				<div id="idHumidity"></div>
+				<div id="idPressure"></div>
+				<div id="warning">Warning :  Not thing aammmmmmmmaaaa</div>
+		</div>
+	
+		<div id="middle">
+			<div id="BUTTON">
+				<input type="button" id="btnLightOn" value="[LIGHT]-ON"/>
+				<input type="button" id="btnLightOff" value="[LIGHT]-OF"/>
+				<input type="button" id="btnFanOn" value="[FAN]-ON"/>
+				<input type="button" id="btnFanOff" value="[FAN]-OFF"/>
+			</div>
+			<div id="chart_div">
+				<script type="text/javascript">
+					var temp = <%- temp %>;
+					// Load google charts
+					google.charts.load('current', {'packages':['gauge']});
+				    google.charts.setOnLoadCallback(drawChart);
+				    function drawChart() {
+				        var data = google.visualization.arrayToDataTable([
+				          ['Label', 'Value'],
+				          ['Temp', 0],
+				          ['Humidity', 0],
+				          ['Pressure', 0]
+				        ]);
+				        var options = {
+				          width: 400, height: 120,
+				          redFrom: 90, redTo: 100,
+				          yellowFrom:75, yellowTo: 90,
+				          minorTicks: 5
+				        };
+				        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+				        chart.draw(data, options);
+				        
 
-	</div?
+				        // check time to update data
+				        setInterval(function() {
+				          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+				          chart.draw(data, options);
+				        }, 13000);
+				        setInterval(function() {
+				        	data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+				         	chart.draw(data, options);
+				        }, 5000);
+				        
+				        setInterval(function() {
+				        	data.setValue(2, 1, 0+ Math.round(temp));
+				        	chart.draw(data, options);
+				        }, 100);
+				      }
+				</script>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

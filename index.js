@@ -1,70 +1,148 @@
-
+    
    	const PORT = 3000								//Đặt địa chỉ Port được mở ra để tạo ra chương trình mạng Socket Server
-   var express = require("express");
-	var app = express();
-	app.use(express.static("./public"));
-	var server = require("http").Server(app);
-	var io = require("socket.io")(server);
-	app.set("view engine","ejs");
-	app.set("views","./views" )
-	var ip = require("ip")
-	
-        			//#Phải khởi tạo io sau khi tạo app!
-    server.listen(process.env.PORT||80, function()
+    var express = require("express");
+    var app = express();
+    app.use(express.static("./public"));
+    var server = require("http").Server(app);
+    var io = require("socket.io")(server);
+    app.set("view engine","ejs");
+    app.set("views","./views" )
+    var ip = require("ip")
+    var path = require('path');
+    const mongoose =  require('mongoose')
+    var mongo = require('mongodb');
+    var MongoClient = require('mongodb').MongoClient;
+    var url = "mongodb://localhost:27017/";
+
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      dbo = db.db("local");
+      dbo.collection("users").find({}).toArray(function(err, result) {
+        if (err) throw err;
+        console.log("database : " + result);
+        userDB = result
+        db.close();
+        });
+    });
+    
+    //#Phải khởi tạo io sau khi tạo app!
+    var bodyParser = require('body-parser');
+    // parse application/json 
+    app.use(bodyParser.json());
+    var urlencodedParser = bodyParser.urlencoded({ extended: false })
+    app.use(bodyParser.urlencoded({ extended: false }));
+
+    /*Variable in server*/
+    var dbo;
+    var userDB = [];
+    var ttemp;
+    var preFan ="OFF" , preLight="OFF";
+    var ttemp = 1;
+    var flag_login = false ;
+    var check_request = false;
+    /*get data Login*/
+    app.post('/login',urlencodedParser ,function (req, res, next) {
+        //console.log("alo");
+        var body = req.body;
+        var uname = body.uname;
+        var password = body.psw;
+        //console.log(uname);
+        //console.log(password);
+        var i;
+        for( i =0 ; i<2 ; i++ )
+        {
+            console.log(userDB[i].userName);
+            if(uname == userDB[i].userName)
+            {
+                var conditon = { userName:userDB[i].userName};
+                var updateStatus = {$set: {status : 1}};
+                dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status update");
+                });
+                res.render('Login',{status:userDB[i].status});  
+                res.end();
+                flag_login = true;
+            }
+        }
+        
+    });
+
+    server.listen(PORT, function()
     {
         //alert(process.env.PORT)
-    	console.log("connected")
+        console.log("connected")
         console.log(ip.address())
     });										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
-    
-    app.get("/", function(req , res)
-    {
-    	res.render("trangchu")
-    })
 
+ 
     io.on("connection",function(socket)
     {
         console.log("đã nhảy dô đây")
         console.log(ip.address())
         console.log("Có người kết nối")
-        socket.on("CLIENT-SEND-MODE-RAIN",function()
+        socket.on("CLIENT-SEND-LIGHT-ON", function(data)
         {
-            io.sockets.emit("SERVER-SEND-RAIN-MODE", {MODE:"Rain",AR:"1"})
+            ttemp = ttemp + 1;
+            preLight = "ON";
+            console.log(ttemp);
+            io.sockets.emit("SERVER-SEND-LIGHT-ON",{MODE:"lightOn",AR:"1"})
         });
-        socket.on("CLIENT-SEND-MODE-LOVE", function()
+        socket.on("CLIENT-SEND-LIGHT_OFF", function()
         {
-            io.sockets.emit("SERVER-SEND-LOVE-MODE",{MODE:"Love",AR:"2"})
+            console.log("Ok light off");
+            preLight = "OFF";
+            io.sockets.emit("SERVER-SEND-LIGHT-OFF",{MODE:"lightOff",AR:"2"})
         });
-        socket.on("CLIENT-SEND-MODE-PLAN", function()
+        socket.on("CLIENT-SEND-FAN-OFF", function()
         {
-            io.sockets.emit("SERVER-SEND-PLAN-MODE",{MODE:"Plan",AR:"3"})
+            preFan = "OFF";
+            io.sockets.emit("SERVER-SEND-FAN-OFF",{MODE:"fanOn",AR:"3"})
         });
-        socket.on("CLIENT-SEND-MODE-DOMINO", function()
+        socket.on("CLIENT-SEND-FAN-ON", function()
         {
-            io.sockets.emit("SERVER-SEND-DOMINO-MODE",{MODE:"Domino",AR:"4"})
+            preFan = "ON";
+            io.sockets.emit("SERVER-SEND-FAN-ON",{MODE:"fanOff",AR:"4"})
         });
-         socket.on("CLIENT-SEND-MODE-OFF", function()
+        socket.on("CLIENT-SEND-TEMP-HUM", function(data)
         {
-            io.sockets.emit("SERVER-SEND-OFF-MODE",{MODE:"Off",AR:"5"})
+            io.sockets.emit("SERVER-SEND-TEMP-HUM",{Temp:data.Temp, Humi: data.Humi,AR:"5"})
         });
-        socket.on("CLIENT-SEND-MODE-MHX", function()
-        {
-
-            io.sockets.emit("SERVER-SEND-MHX-MODE",{MODE:"Mùa Hè Xanh", AR:"6"})
-            //console.log("con heo con đáng yêu")
-
-        });
-        socket.on("CLIENT-SEND-MODE-BOLIDE",function()
-        {
-            io.sockets.emit("SERVER-SEND-BOLIDE-MODE",{MODE:"Sao Băng",AR:"7"})
-        })
-       
 
     })
-function ParseJson(jsondata) {
-    try {
-        return JSON.parse(jsondata);
-    } catch (error) {
-        return null;
+    app.get("/", function(req , res)
+    {
+            //console.log("setInterval");
+            console.log("render Login");
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
+            
+    });
+     app.get("/login", function(req , res)
+    {
+            //console.log("setInterval");
+            console.log("render Login");
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:2 });
+            
+    });
+    app.get("/home", function(req , res)
+    {
+            //console.log("setInterval");
+            if(flag_login == true){
+              res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp}); 
+            }
+            else
+            {
+            console.log("render Login");
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
+        }
+
+    });
+    function ParseJson(jsondata) {
+        try {
+            return JSON.parse(jsondata);
+        } catch (error) {
+            return null;
+        }
     }
-}
+    
+
+
