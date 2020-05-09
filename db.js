@@ -11,9 +11,22 @@ const userSchema = new mongoose.Schema({
 
 const user = mongoose.model('users', userSchema)
 
-user.create(
+user.remove({}).exec((err, result)=>{
+	console.log(result);
+})
+user.create([
 {
 	user : "buiduc",
-	password : "1104",
+	password : "114",
 	status: 0
-})
+},
+{
+	user : "ce232",
+	password : "113",
+	status: 0
+},
+{
+	user : "ducxd",
+	password : "12345",
+	status: 0
+}])

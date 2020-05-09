@@ -52,12 +52,12 @@
         //console.log(password);
         var i;
    
-        for( i =0 ; i<2 ; i++ )
+        for( i =0 ; i<3 ; i++ )
         {
-            if(uname == userDB[i].userName && password == userDB[i].password)
+            if(uname == userDB[i].user && password == userDB[i].password && userDB[i].status != 1   )
             {
-                console.log(userDB[i].userName);
-                var conditon = {userName:userDB[i].userName};
+                console.log(userDB[i].user);
+                var conditon = {user:userDB[i].user};
                 var updateStatus = {$set: {status : 1}};
                 dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
                     console.log("Status update");
@@ -73,7 +73,7 @@
             //db.close();
                     });
                 });
-                res.render('Login',{status:userDB[i].status});  
+                res.render('Login',{status:1});  
                 res.end();
                 flag_login = true;
                 break;
@@ -83,9 +83,9 @@
         }
        if(flag_login == false)
         {
-            //console.log(userDB[i].userName);
-            for( i =0 ; i<2 ; i++ ){
-                var conditon = { userName:userDB[i].userName};
+            //console.log(userDB[i].user);
+            for( i =0 ; i<3 ; i++ ){
+                var conditon = { user:userDB[i].user};
                 var updateStatus = {$set: {status : -1}};
                 dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
                     console.log("Status update");
@@ -108,7 +108,7 @@
  
     io.on("connection",function(socket)
     {
-        console.log("đã nhảy dô đây")
+        console.log("flag log: "+ flag_login)
         console.log(ip.address())
         console.log("Có người kết nối")
         socket.on("CLIENT-SEND-LIGHT-ON", function(data)
@@ -163,7 +163,7 @@
             else
             {
             console.log("render Login");
-            res.render(path.join(__dirname + '/views/Login.ejs'), {status:502 });
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
         }
 
     });
