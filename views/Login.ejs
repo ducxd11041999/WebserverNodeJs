@@ -34,9 +34,16 @@
             alert("Login");
             window.location.href = "http://localhost:3000/login";
           }
+          else if ((status=='-1' || status == -1))
+          {
+            alert("Incorrect Username or Password");
+            window.location.href = "http://localhost:3000/login";
+          }
           else
           {
+            
           }
+
         </script>
       <label for="uname"><b>Username</b></label>
       <input type="text" id="un" placeholder="Enter Username" name="uname" required>

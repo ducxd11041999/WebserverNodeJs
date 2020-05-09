@@ -14,16 +14,7 @@
     var MongoClient = require('mongodb').MongoClient;
     var url = "mongodb://localhost:27017/";
 
-    MongoClient.connect(url, function(err, db) {
-      if (err) throw err;
-      dbo = db.db("local");
-      dbo.collection("users").find({}).toArray(function(err, result) {
-        if (err) throw err;
-        console.log("database : " + result);
-        userDB = result
-        db.close();
-        });
-    });
+   
     
     //#Phải khởi tạo io sau khi tạo app!
     var bodyParser = require('body-parser');
@@ -40,6 +31,17 @@
     var ttemp = 1;
     var flag_login = false ;
     var check_request = false;
+    /*Connect data base*/
+    MongoClient.connect(url, function(err, db) {
+          if (err) throw err;
+          dbo = db.db("local");
+          dbo.collection("users").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log("database : " + result);
+            userDB = result
+            //db.close();
+        });
+    });
     /*get data Login*/
     app.post('/login',urlencodedParser ,function (req, res, next) {
         //console.log("alo");
@@ -49,20 +51,49 @@
         //console.log(uname);
         //console.log(password);
         var i;
+   
         for( i =0 ; i<2 ; i++ )
         {
-            console.log(userDB[i].userName);
-            if(uname == userDB[i].userName)
+            if(uname == userDB[i].userName && password == userDB[i].password)
             {
-                var conditon = { userName:userDB[i].userName};
+                console.log(userDB[i].userName);
+                var conditon = {userName:userDB[i].userName};
                 var updateStatus = {$set: {status : 1}};
                 dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
                     console.log("Status update");
                 });
+                console.log(userDB[i].status);
+                MongoClient.connect(url, function(err, db) {
+                  if (err) throw err;
+                  dbo = db.db("local");
+                  dbo.collection("users").find({}).toArray(function(err, result) {
+                    if (err) throw err;
+                    console.log("database : " + result);
+                    userDB = result
+            //db.close();
+                    });
+                });
                 res.render('Login',{status:userDB[i].status});  
                 res.end();
                 flag_login = true;
+                break;
             }
+            else
+                flag_login = false;
+        }
+       if(flag_login == false)
+        {
+            //console.log(userDB[i].userName);
+            for( i =0 ; i<2 ; i++ ){
+                var conditon = { userName:userDB[i].userName};
+                var updateStatus = {$set: {status : -1}};
+                dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status update");
+                });
+                
+            }
+            res.render('Login',{status:-1});  
+            res.end();
         }
         
     });
@@ -120,7 +151,7 @@
     {
             //console.log("setInterval");
             console.log("render Login");
-            res.render(path.join(__dirname + '/views/Login.ejs'), {status:2 });
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:502});
             
     });
     app.get("/home", function(req , res)
@@ -132,7 +163,7 @@
             else
             {
             console.log("render Login");
-            res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
+            res.render(path.join(__dirname + '/views/Login.ejs'), {status:502 });
         }
 
     });
