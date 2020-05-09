@@ -109,8 +109,8 @@ header {
  }
 #sayHi{
 	font-family: Helvetica, Arial, Tahoma, sans-serif;
-	font-size: 100%;
-	color: red; 
+	font-size: 80%;
+	color: blue; 
 	text-align:center
 }
 #BUTTON{
