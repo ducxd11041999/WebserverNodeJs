@@ -24,6 +24,7 @@
     app.use(bodyParser.urlencoded({ extended: false }));
 
     /*Variable in server*/
+    var current_name = "";
     var dbo;
     var userDB = [];
     var ttemp;
@@ -73,7 +74,9 @@
             //db.close();
                     });
                 });
-                res.render('Login',{status:1});  
+                current_name = userDB[i].user;
+                res.render('Login',{status:1}); 
+
                 res.end();
                 flag_login = true;
                 break;
@@ -84,14 +87,11 @@
        if(flag_login == false)
         {
             //console.log(userDB[i].user);
-            for( i =0 ; i<3 ; i++ ){
-                var conditon = { user:userDB[i].user};
-                var updateStatus = {$set: {status : -1}};
-                dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
+            var conditon = { user:current_name};
+            var updateStatus = {$set: {status : -1}};
+            dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
                     console.log("Status update");
-                });
-                
-            }
+            });
             res.render('Login',{status:-1});  
             res.end();
         }
@@ -143,13 +143,20 @@
     app.get("/", function(req , res)
     {
             //console.log("setInterval");
+            flag_login = false;
             console.log("render Login");
             res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
             
     });
      app.get("/login", function(req , res)
     {
+            flag_login = false;
             //console.log("setInterval");
+            var conditon = {status:1};
+            var updateStatus = {$set: {status : 0}};
+            dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status update");
+                });
             console.log("render Login");
             res.render(path.join(__dirname + '/views/Login.ejs'), {status:502});
             
@@ -158,7 +165,7 @@
     {
             //console.log("setInterval");
             if(flag_login == true){
-              res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp}); 
+              res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp, name:current_name}); 
             }
             else
             {
