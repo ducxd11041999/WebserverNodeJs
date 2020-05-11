@@ -1,6 +1,5 @@
 body{background-image: url('anh1.jpg')}
 #wraper{
-	with:600px;
 	margin:center;
 }
 #left,#right:{
@@ -11,9 +10,9 @@ body{background-image: url('anh1.jpg')}
 	float:left;
 }
 header {
-  padding: 10px;
+  padding: 5px;
   text-align: center;
-  font-size: 35px;
+  font-size: 30px;
   color: red;
 }
 #Top{
@@ -21,9 +20,10 @@ header {
 	width: 65%;
 	float:left;
 }
-#bottom: {
+#bottom{
 	width: 50%;
-	float:left;
+	float:right;
+	padding-top: 20px;
 }
 #middle{
 	width: 50%;
@@ -43,6 +43,10 @@ header {
 	color: red;
 	background-color: green;
 	font-size:200%;
+}
+
+#boxTime{
+		border: solid 1px black;
 }
 #Notificate{
 	border: solid 1px black;
@@ -75,13 +79,13 @@ header {
 	float: center;
 	border-top: none;
 	padding-left: 200px;
+	padding-right:5px;
 	font-size:100%;
 }
 #lightMode{
 	background-color: #1bc9d1;
 	border:solid 2px black;
 	border-top: none;
-	padding: :5px;
 	text-align: center;
 	color: yellow;
 	font-size:150%;
@@ -109,13 +113,13 @@ header {
  }
 #sayHi{
 	font-family: Helvetica, Arial, Tahoma, sans-serif;
-	font-size: 80%;
-	color: blue; 
-	text-align:center
+	font-size: 100%;
+	color: red; 
+	text-align:center;
 }
 #BUTTON{
 	text-align: center;
-	padding: 100px;
+	padding: 50px;
 }
 #image{width: 100px; 
 	height: 100px;
@@ -128,5 +132,4 @@ header {
 	text-align: center;
 	color: yellow;
 	font-size:150%;
-
 }
