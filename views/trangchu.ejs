@@ -13,24 +13,30 @@
 	<div id="wraper">
 		<div id= "Top">
 			<header>
- 				<h2>HE THONG NHUNG KHONG DAY CE-232</h2>
+ 				<h2> HE THONG NHUNG KHONG DAY CE-232</h2>
 			</header>
 		</div>
 		<div id="right">
-			<div id="sayHi" >
-				<a href= "http://localhost:3000/login">
-					<i><ins> 
-						hi <%- name %>
-					</ins></i>
-				</a>
+			<div id = "boxSayHi">
+				<div id="sayHi" >
+					<a href= "http://localhost:3000/login">
+						<p>
+						hi <%- name %> 	&#128540;
+						</p>			
+					</a>
+				</div>
 			</div>
-		<script language="javascript" type="text/javascript"> 
-		dayName = new Array ("Sun","Mon","Tue","Wed","Thur","Fri","Sat") 
-		monName = new Array ("1","2","3","4","5","6","7","8","9","10","11","12") 
-		now = new Date 
-		document.write(now.getHours()+ ":" +now.getMinutes()+" "+dayName[now.getDay()]+ ", " +now.getDate()+ "-" +monName[now.getMonth()]+ "-" +now.getFullYear()+ "</b>")                                     
-		</script>
-			
+			<div id = "boxTime">
+				<script language="javascript" type="text/javascript"> 
+					dayName = new Array ("Sun","Mon","Tue","Wed","Thur","Fri","Sat") 
+					monName = new Array ("1","2","3","4","5","6","7","8","9","10","11","12") 
+					now = new Date 
+					document.write(now.getHours()+ ":" +now.getMinutes()+" "+dayName[now.getDay()]+ ", " +now.getDate()+ "-" +monName[now.getMonth()]+ "-" +now.getFullYear()+ "</b>")                                     
+				</script>
+			</div>
+			<div id ="mapImgae">
+				<img id="myImage" onclick="changeImage()" src="logo-uit.png" width="200" height="180">
+			</div>
 		</div>
 		<div id="left">
 			<div id="boxTitle">STATUS</div>
@@ -90,6 +96,35 @@
 				      }
 				</script>
 			</div>
+		</div>
+		<div id ="bottom">
+			<p>
+				<a href="http://www.uit.edu.vn" target="_blank">
+					<i>
+						<b>
+							Trường đại học Công nghệ thông tin- ĐH quốc gia thành phố HCM
+						</b>
+					</i>
+				</a>
+			</p>
+			<p>
+				<a href="http://www.ce.uit.edu.vn" target="_blank">
+					<i>
+						<b>
+								Khoa Kỹ thuật máy tính UIT
+						</b>
+					</i>
+				</a>
+			</p>
+			<p>
+				<a href="https://www.facebook.com/duc.bph" target="_blank">
+					<i>
+						<b>
+									Design by xDev
+						</b>
+					</i>
+				</a>
+			</p>
 		</div>
 	</div>
 </body>

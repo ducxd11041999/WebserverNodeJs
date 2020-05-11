@@ -139,17 +139,6 @@
         socket.on("CLIENT-SEND-LIGHT-ON", function(data)
         {
             ttemp = ttemp + 1;
-            MongoClient.connect(url_dbCtrlDevice, function(err, db) {
-                if (err) throw err;
-                dbo = db.db("local");
-                dbo.collection("store_datas").find({}).toArray(function(err, result) {
-                    if (err) throw err;
-                    console.log("database device : " + result);
-                    ctrlDB = result;
-                    //db.close();
-                });
-            });
-            console.log("light: " + ctrlDB[0].ctrl)
             //console.log(ttemp);
             io.sockets.emit("SERVER-SEND-LIGHT-ON",{MODE:"lightOn",AR:"1"})
             var conditon = {devicename:ctrlDB[0].devicename};
