@@ -125,6 +125,7 @@
                 if (err) throw err;
                     console.log("database device : " + result);
                     ctrlDB = result;
+                    io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
                     //db.close();
             });
         });
@@ -134,18 +135,10 @@
         //console.log(ip.address())
         //console.log("Có người kết nối")
         io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
+
         socket.on("CLIENT-SEND-LIGHT-ON", function(data)
         {
             ttemp = ttemp + 1;
-         
-            //console.log(ttemp);
-            io.sockets.emit("SERVER-SEND-LIGHT-ON",{MODE:"lightOn",AR:"1"})
-            var conditon = {devicename:ctrlDB[0].devicename};
-            var updateStatus = {$set: {ctrl : "ON"}};
-            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
-                    console.log("Status Light On is update");
-                });
-
             MongoClient.connect(url_dbCtrlDevice, function(err, db) {
                 if (err) throw err;
                 dbo = db.db("local");
@@ -157,6 +150,13 @@
                 });
             });
             console.log("light: " + ctrlDB[0].ctrl)
+            //console.log(ttemp);
+            io.sockets.emit("SERVER-SEND-LIGHT-ON",{MODE:"lightOn",AR:"1"})
+            var conditon = {devicename:ctrlDB[0].devicename};
+            var updateStatus = {$set: {ctrl : "ON"}};
+            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status Light On is update");
+                });
 
         });
         socket.on("CLIENT-SEND-LIGHT_OFF", function()
