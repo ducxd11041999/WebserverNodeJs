@@ -8,12 +8,15 @@ const userSchema = new mongoose.Schema({
 	password: String,
 	status: Number
 })
-
+const ctrlSchema = new mongoose.Schema({
+	devicename : String,
+	ctrl: String
+})
 const user = mongoose.model('users', userSchema)
-
+const store_data = mongoose.model('store_data', ctrlSchema)
 user.remove({}).exec((err, result)=>{
 	console.log(result);
-})
+});
 user.create([
 {
 	user : "buiduc",
@@ -29,4 +32,18 @@ user.create([
 	user : "ducxd",
 	password : "12345",
 	status: 0
-}])
+}]);
+
+store_data.remove({}).exec((err, result)=>{
+	console.log(result);
+})
+store_data.create([
+{
+	devicename : "Light",
+	ctrl: "OFF"
+},
+{
+	devicename : "Fan",
+	ctrl: "OFF"
+}
+]);

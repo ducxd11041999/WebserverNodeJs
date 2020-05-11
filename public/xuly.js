@@ -75,8 +75,8 @@ socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 {
 	//alert("Đã chọn hiệu ứng domino")
 	$("#lightMode").html("")
-	$("#lightMode").html("[LIGHT]-Status: " + data.Light);
+	$("#lightMode").html("[LIGHT]-Status: " + data[0].Light);
 	$("#fanMode").html("")
-	$("#fanMode").html("[FAN]-Status: " + data.Fan);
+	$("#fanMode").html("[FAN]-Status: " + data[1].Fan);
 	//
 })

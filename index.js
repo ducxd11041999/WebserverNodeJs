@@ -12,8 +12,8 @@
     const mongoose =  require('mongoose')
     var mongo = require('mongodb');
     var MongoClient = require('mongodb').MongoClient;
-    var url = "mongodb://localhost:27017/";
-
+    var url_dbLogin = "mongodb://localhost:27017/";
+    var url_dbCtrlDevice = "mongodb://localhost:27017/";
    
     
     //#Phải khởi tạo io sau khi tạo app!
@@ -27,19 +27,29 @@
     var current_name = "";
     var dbo;
     var userDB = [];
-    var ttemp;
-    var preFan ="OFF" , preLight="OFF";
+    var ctrlDB = [];
     var ttemp = 1;
     var flag_login = false ;
     var check_request = false;
-    /*Connect data base*/
-    MongoClient.connect(url, function(err, db) {
+    /*Connect login data base*/
+    MongoClient.connect(url_dbLogin, function(err, db) {
           if (err) throw err;
           dbo = db.db("local");
           dbo.collection("users").find({}).toArray(function(err, result) {
             if (err) throw err;
-            console.log("database : " + result);
+            console.log("database login : " + result);
             userDB = result
+            //db.close();
+        });
+    });
+    /*coonect data control device*/
+   MongoClient.connect(url_dbCtrlDevice, function(err, db) {
+          if (err) throw err;
+          dbo = db.db("local");
+          dbo.collection("store_datas").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log("database device : " + result);
+            ctrlDB = result;
             //db.close();
         });
     });
@@ -64,7 +74,7 @@
                     console.log("Status update");
                 });
                 console.log(userDB[i].status);
-                MongoClient.connect(url, function(err, db) {
+                MongoClient.connect(url_dbLogin, function(err, db) {
                   if (err) throw err;
                   dbo = db.db("local");
                   dbo.collection("users").find({}).toArray(function(err, result) {
@@ -108,31 +118,79 @@
  
     io.on("connection",function(socket)
     {
+        MongoClient.connect(url_dbCtrlDevice, function(err, db) {
+        if (err) throw err;
+            dbo = db.db("local");
+            dbo.collection("store_datas").find({}).toArray(function(err, result) {
+                if (err) throw err;
+                    console.log("database device : " + result);
+                    ctrlDB = result;
+                    //db.close();
+            });
+        });
+
+        console.log("light: " + ctrlDB[0].ctrl)
         console.log("flag log: "+ flag_login)
-        console.log(ip.address())
-        console.log("Có người kết nối")
+        //console.log(ip.address())
+        //console.log("Có người kết nối")
+        io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
         socket.on("CLIENT-SEND-LIGHT-ON", function(data)
         {
             ttemp = ttemp + 1;
-            preLight = "ON";
-            console.log(ttemp);
+         
+            //console.log(ttemp);
             io.sockets.emit("SERVER-SEND-LIGHT-ON",{MODE:"lightOn",AR:"1"})
+            var conditon = {devicename:ctrlDB[0].devicename};
+            var updateStatus = {$set: {ctrl : "ON"}};
+            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status Light On is update");
+                });
+
+            MongoClient.connect(url_dbCtrlDevice, function(err, db) {
+                if (err) throw err;
+                dbo = db.db("local");
+                dbo.collection("store_datas").find({}).toArray(function(err, result) {
+                    if (err) throw err;
+                    console.log("database device : " + result);
+                    ctrlDB = result;
+                    //db.close();
+                });
+            });
+            console.log("light: " + ctrlDB[0].ctrl)
+
         });
         socket.on("CLIENT-SEND-LIGHT_OFF", function()
         {
-            console.log("Ok light off");
-            preLight = "OFF";
+           //console.log("Ok light off");
+            
             io.sockets.emit("SERVER-SEND-LIGHT-OFF",{MODE:"lightOff",AR:"2"})
+
+            var conditon = {devicename:ctrlDB[0].devicename};
+            var updateStatus = {$set: {ctrl : "OFF"}};
+            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status Light OFF is update");
+                });
         });
         socket.on("CLIENT-SEND-FAN-OFF", function()
         {
-            preFan = "OFF";
+      
             io.sockets.emit("SERVER-SEND-FAN-OFF",{MODE:"fanOn",AR:"3"})
+            var conditon = {devicename:"Fan"};
+            var updateStatus = {$set: {ctrl : "OFF"}};
+            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status Fan Off is update");
+                });
         });
         socket.on("CLIENT-SEND-FAN-ON", function()
         {
-            preFan = "ON";
+           
             io.sockets.emit("SERVER-SEND-FAN-ON",{MODE:"fanOff",AR:"4"})
+
+            var conditon = {devicename:"Fan"};
+            var updateStatus = {$set: {ctrl : "ON"}};
+            dbo.collection("store_datas").updateOne(conditon, updateStatus, function(err, res) {
+                    console.log("Status Fan On is update");
+                });
         });
         socket.on("CLIENT-SEND-TEMP-HUM", function(data)
         {
