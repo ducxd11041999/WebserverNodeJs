@@ -32,7 +32,9 @@ header {
 	width: 50%;
 	float:left;
 	background-image: url('logo-uit.png');
+	background-repeat: no-repeat;
 	background-size: 680px 300px;
+	text-align: center;
 }
 #right{
 	width: 20%;

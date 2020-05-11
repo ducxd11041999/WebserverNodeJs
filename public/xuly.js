@@ -111,7 +111,7 @@ socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 		image.src = "pic_bulboff.gif";
 	}
 
-	if(data[0].Fan == "ON")
+	if(data[1].Fan == "ON")
 	{
 		image1.src = "fanOn.gif";
 	}
