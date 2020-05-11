@@ -33,12 +33,22 @@ socket.on("SERVER-SEND-FAN-ON", function(data)
 	//alert("Đã chọn hiệu ứng mưa")
 	$("#fanMode").html("");
 	$("#fanMode").html("[FAN]-Status: ON");
+	var image1 = document.getElementById('myImage1');   
+ 	if (image1.src.match("fanOff")) 
+ 		{       
+ 			image1.src = "fanOn.gif";  
+ 		}
 })
 socket.on("SERVER-SEND-FAN-OFF", function(data)
 {
 	//alert("Đã chọn hiệu ứng love")
 	$("#fanMode").html("")
 	$("#fanMode").html("[FAN]-Status: OFF");
+	var image1 = document.getElementById('myImage1');   
+ 	if (image1.src.match("fanOn")) 
+ 		{       
+ 			image1.src = "fanOff.jpg";  
+ 		}
 })
 socket.on("SERVER-SEND-LIGHT-ON", function(data)
 {
@@ -90,7 +100,8 @@ socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 	$("#fanMode").html("")
 	$("#fanMode").html("[FAN]-Status: " + data[1].Fan);
 	//image.src = "pic_bulboff.gif";  
-	var image = document.getElementById('myImage');    
+	var image = document.getElementById('myImage');  
+	var image1 = document.getElementById('myImage1');    
 	if(data[0].Light == "ON")
 	{
 		image.src = "pic_bulbon.gif";
@@ -98,6 +109,15 @@ socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 	else
 	{
 		image.src = "pic_bulboff.gif";
+	}
+
+	if(data[0].Fan == "ON")
+	{
+		image1.src = "fanOn.gif";
+	}
+	else
+	{
+		image1.src = "fanOff.jpg";
 	}
 	//
 })
