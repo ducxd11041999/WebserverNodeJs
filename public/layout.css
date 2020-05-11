@@ -1,4 +1,6 @@
-body{background-image: url('anh1.jpg')}
+body{
+	background-image: url('anh1.jpg')
+}
 #wraper{
 	margin:center;
 }
@@ -26,8 +28,11 @@ header {
 	padding-top: 20px;
 }
 #middle{
+	padding-top: 40px;
 	width: 50%;
 	float:left;
+	background-image: url('logo-uit.png');
+	background-size: 680px 300px;
 }
 #right{
 	width: 20%;

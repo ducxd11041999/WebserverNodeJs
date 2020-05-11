@@ -1,5 +1,5 @@
 var socket = io("localhost:3000");
-
+var statusCtrl = [];
 $(document).ready(function()
 {
 	//console.log("aaa");
@@ -48,8 +48,13 @@ socket.on("SERVER-SEND-LIGHT-ON", function(data)
 	$("#idTemp").html("");
 	//$("#chart_div").html("Temperature : "+ data.Temp);
 	//document.getElementById('chart_div').setAttribute('temp', 20);
-	var con = document.getElementById('chart_div').setAttribute('temp');
-	alert(con);
+	//var con = document.getElementById('chart_div').setAttribute('temp');
+	 
+	var image = document.getElementById('myImage');   
+ 	if (image.src.match("bulboff")) 
+ 		{       
+ 			image.src = "pic_bulbon.gif";   
+ 		}
 })
 
 socket.on("SERVER-SEND-LIGHT-OFF", function(data)
@@ -57,6 +62,11 @@ socket.on("SERVER-SEND-LIGHT-OFF", function(data)
 	//alert("Đã chọn hiệu ứng domino")
 	$("#lightMode").html("")
 	$("#lightMode").html("[LIGHT]-Status: OFF ");
+	var image = document.getElementById('myImage');   
+ 	if (image.src.match("bulbon")) 
+ 		{       
+ 			image.src = "pic_bulboff.gif";   
+ 		}
 })
 
 socket.on("SERVER-SEND-TEMP-HUM", function(data)
@@ -74,9 +84,20 @@ socket.on("SERVER-SEND-TEMP-HUM", function(data)
 socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 {
 	//alert("Đã chọn hiệu ứng domino")
+	statusCtrl = data;
 	$("#lightMode").html("")
 	$("#lightMode").html("[LIGHT]-Status: " + data[0].Light);
 	$("#fanMode").html("")
 	$("#fanMode").html("[FAN]-Status: " + data[1].Fan);
+	//image.src = "pic_bulboff.gif";  
+	var image = document.getElementById('myImage');    
+	if(data[0].Light == "ON")
+	{
+		image.src = "pic_bulbon.gif";
+	}
+	else
+	{
+		image.src = "pic_bulboff.gif";
+	}
 	//
 })
