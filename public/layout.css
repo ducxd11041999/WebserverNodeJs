@@ -102,8 +102,8 @@ header {
 	text-align: center;
 	font-size:120%;
 }
-
-#btnLightOff{background-color: #d3d622; 
+#btnLightOff{
+	background-color: #d3d622; 
 	text-align: center;
 	font-size:120%;
 }
@@ -132,11 +132,9 @@ header {
 	height: 100px;
 }
 #idTemp{
-	background-color: #1bc9d1;
-	border:solid 2px black;
 	border-top: none;
-	padding:5px;
 	text-align: center;
 	color: yellow;
-	font-size:150%;
+	font-size:70%;
 }
+
