@@ -1,11 +1,21 @@
 var socket = io("localhost:3000");
 var statusCtrl = [];
+var sensorRead = [];
 $(document).ready(function()
 {
 	//console.log("aaa");
 	$("#btnLightOn").click(function()
 	{
 		socket.emit("CLIENT-SEND-LIGHT-ON",{Temp:"20",AR:"1"});
+		socket.emit("CLIENT-SEND-TEMP_HUM", [
+		{
+			element: "Temperature",
+			value: 38
+		},
+		{
+			element: "Humidity",
+			value: 80
+		}]);
 	})
 	$("#btnLightOff").click(function()
 	{
@@ -20,12 +30,7 @@ $(document).ready(function()
 	{
 		socket.emit("CLIENT-SEND-FAN-OFF");
 	})
-	/*
-	$("#btnLogin").click(function()
-	{
-		alert("login");
-		socket.emit("CLIENT-SEND-LOGIN", {uName: $("#un").val(), pWord: $("#pw").val()});
-	})*/
+
 })
 
 socket.on("SERVER-SEND-FAN-ON", function(data)
@@ -91,7 +96,7 @@ socket.on("SERVER-SEND-TEMP-HUM", function(data)
 	//
 })
 
-socket.on("SERVER-SEND-BACKUP-DATA", function(data)
+socket.on("SERVER-SEND-BACKUP-DEVICE", function(data)
 {
 	//alert("Đã chọn hiệu ứng domino")
 	statusCtrl = data;
@@ -118,6 +123,52 @@ socket.on("SERVER-SEND-BACKUP-DATA", function(data)
 	else
 	{
 		image1.src = "fanOff.jpg";
+	}
+	//
+})
+
+socket.on("SERVER-SEND-BACKUP-SENSOR", function(data)
+{
+	//alert("Đã chọn hiệu ứng domino")
+	sensorRead = data;
+	//alert(sensorRead[0].Temperature);
+	$("#idTemp").html("");
+	$("#idTemp").html("Temperature: " + sensorRead[0].Temperature);
+	$("#idHumidity").html("");
+	$("#idHumidity").html("Humidity: " + sensorRead[1].Humidity);
+	var x = sensorRead[0].Temperature;
+	switch(true)
+	{
+		case x < 20:
+			{
+				$("#warning").html("");
+				$("#warning").html("Very Cold");
+				break;
+			}
+		case x < 27:
+			{
+				$("#warning").html("");
+				$("#warning").html("Cool");
+				break;
+			}
+		case x < 33:
+			{
+				$("#warning").html("");
+				$("#warning").html("Warm");
+				break;
+			}
+		case x < 45:
+			{
+				$("#warning").html("");
+				$("#warning").html("Very Hot");
+				break;
+			}
+		default:
+			{
+				$("#warning").html("");
+				$("#warning").html("Waitng set");
+			}
+
 	}
 	//
 })

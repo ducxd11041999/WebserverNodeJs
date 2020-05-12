@@ -65,14 +65,16 @@
 			<div id="chart_div">
 				<script type="text/javascript">
 					var temp = <%- temp %>;
+					var Tempera = <%- Temperature%>;
+					var Humidi = <%- Humidity%>
 					// Load google charts
 					google.charts.load('current', {'packages':['gauge']});
 				    google.charts.setOnLoadCallback(drawChart);
 				    function drawChart() {
 				        var data = google.visualization.arrayToDataTable([
 				          ['Label', 'Value'],
-				          ['Temp', 0],
-				          ['Humidity', 0],
+				          ['Temp', Tempera],
+				          ['Humidity', Humidi],
 				          ['Pressure', 0]
 				        ]);
 				        var options = {
@@ -83,22 +85,24 @@
 				        };
 				        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 				        chart.draw(data, options);
-				        
-
+			
 				        // check time to update data
+				        /*
 				        setInterval(function() {
 				          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
 				          chart.draw(data, options);
 				        }, 13000);
-				        setInterval(function() {
-				        	data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
-				         	chart.draw(data, options);
-				        }, 5000);
+				     
 				        
 				        setInterval(function() {
 				        	data.setValue(2, 1, 0+ Math.round(temp));
 				        	chart.draw(data, options);
 				        }, 100);
+				        */
+				         setInterval(function() {
+				        	data.setValue(2, 1, 40 + Math.round(60 * Math.random()));
+				         	chart.draw(data, options);
+				        }, 1000);
 				      }
 				</script>
 			</div>
