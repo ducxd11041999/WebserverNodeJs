@@ -14,7 +14,7 @@
     var MongoClient = require('mongodb').MongoClient;
     var url_dbLogin = "mongodb://localhost:27017/";
     var url_dbCtrlDevice = "mongodb://localhost:27017/";
-   
+    var url_dbStoreSensor = "mongodb://localhost:27017/";
     
     //#Phải khởi tạo io sau khi tạo app!
     var bodyParser = require('body-parser');
@@ -28,6 +28,7 @@
     var dbo;
     var userDB = [];
     var ctrlDB = [];
+    var sensorDB = [];
     var ttemp = 1;
     var flag_login = false ;
     var check_request = false;
@@ -43,13 +44,24 @@
         });
     });
     /*coonect data control device*/
-   MongoClient.connect(url_dbCtrlDevice, function(err, db) {
+    MongoClient.connect(url_dbCtrlDevice, function(err, db) {
           if (err) throw err;
           dbo = db.db("local");
           dbo.collection("store_datas").find({}).toArray(function(err, result) {
             if (err) throw err;
             console.log("database device : " + result);
             ctrlDB = result;
+            //db.close();
+        });
+    });
+    /*connect data sensor */
+    MongoClient.connect(url_dbStoreSensor, function(err, db) {
+          if (err) throw err;
+          dbo = db.db("local");
+          dbo.collection("store_sensors").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log("database sensor : " + result);
+            sensorDB = result;
             //db.close();
         });
     });
@@ -125,17 +137,29 @@
                 if (err) throw err;
                     console.log("database device : " + result);
                     ctrlDB = result;
-                    io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
+                    io.sockets.emit("SERVER-SEND-BACKUP-DEVICE",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
                     //db.close();
             });
         });
-
-        console.log("light: " + ctrlDB[0].ctrl)
+        MongoClient.connect(url_dbStoreSensor, function(err, db) {
+            if (err) throw err;
+            dbo = db.db("local");
+            dbo.collection("store_sensors").find({}).toArray(function(err, result) {
+                if (err) throw err;
+                console.log("database sensor : " + result);
+                sensorDB = result;
+                io.sockets.emit("SERVER-SEND-BACKUP-SENSOR",[{Temperature:sensorDB[1].value},
+                    {Humidity:sensorDB[0].value}])
+            //db.close();
+        });
+    });
+        console.log("Temperature: " + sensorDB[1].value)
         console.log("flag log: "+ flag_login)
         //console.log(ip.address())
         //console.log("Có người kết nối")
         io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
-
+        io.sockets.emit("SERVER-SEND-BACKUP-SENSOR",[{Temperature:sensorDB[0].value},
+                    {Humidity:sensorDB[1].value}])
         socket.on("CLIENT-SEND-LIGHT-ON", function(data)
         {
             ttemp = ttemp + 1;
@@ -181,9 +205,30 @@
                     console.log("Status Fan On is update");
                 });
         });
-        socket.on("CLIENT-SEND-TEMP-HUM", function(data)
+        socket.on("CLIENT-SEND-TEMP_HUM", function(data)
         {
-            io.sockets.emit("SERVER-SEND-TEMP-HUM",{Temp:data.Temp, Humi: data.Humi,AR:"5"})
+            /*param data
+                format: [{
+                    element: "Temperature",
+                    value: x_Number
+                },
+                {
+                    element: "Humidity",
+                    value: y_Number
+                }]
+            */
+            /*Update Value of sensor to data base*/
+            var conditon_t = {element:"Temperature"};
+            var updateValue_t = {$set: {value : data[0].value}};
+            dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
+                    console.log("Value Temperature is update");
+                });
+            var conditon_h = {element:"Humidity"};
+            var updateValue_h = {$set: {value : data[1].value}};
+            dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
+                    console.log("Value Humidity is update");
+                });
+            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
         });
 
     })
@@ -212,7 +257,9 @@
     {
             //console.log("setInterval");
             if(flag_login == true){
-              res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp, name:current_name}); 
+              res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp, name:current_name,
+                Temperature: sensorDB[1].value,
+                Humidity: sensorDB[0].value}); 
             }
             else
             {

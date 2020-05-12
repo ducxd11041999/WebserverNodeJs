@@ -70,7 +70,7 @@ header {
 	border-top: none;
 	padding:5px;
 	text-align: center;
-	color: yellow;
+	color: red;
 	font-size:150%;
 }
 #fanMode{
@@ -132,9 +132,21 @@ header {
 	height: 100px;
 }
 #idTemp{
+	background-color: #1bc9d1;
+	border:solid 2px black;
 	border-top: none;
+	padding:5px;
 	text-align: center;
-	color: yellow;
-	font-size:70%;
+	color: blue;
+	font-size:150%;
+}
+#idHumidity{
+	background-color: #1bc9d1;
+	border:solid 2px black;
+	border-top: none;
+	padding:5px;
+	text-align: center;
+	color: blue;
+	font-size:150%;
 }
 

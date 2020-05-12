@@ -8,12 +8,19 @@ const userSchema = new mongoose.Schema({
 	password: String,
 	status: Number
 })
+
 const ctrlSchema = new mongoose.Schema({
 	devicename : String,
 	ctrl: String
 })
+const sensorSchema = new mongoose.Schema({
+	element : String,
+	value: Number
+})
 const user = mongoose.model('users', userSchema)
 const store_data = mongoose.model('store_data', ctrlSchema)
+const store_sensor = mongoose.model('store_sensor', sensorSchema)
+
 user.remove({}).exec((err, result)=>{
 	console.log(result);
 });
@@ -47,3 +54,17 @@ store_data.create([
 	ctrl: "OFF"
 }
 ]);
+
+store_sensor.remove({}).exec((err, result)=>{
+	console.log(result);
+})
+
+store_sensor.create([
+{
+	element: "Temperature",
+	value : 0
+},
+{
+	element: "Humidity",
+	value : 0
+}])
