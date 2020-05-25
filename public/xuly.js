@@ -1,4 +1,4 @@
-var socket = io("localhost:3000");
+var socket = io("192.168.1.8:80");
 var statusCtrl = [];
 var sensorRead = [];
 $(document).ready(function()
@@ -7,7 +7,7 @@ $(document).ready(function()
 	$("#btnLightOn").click(function()
 	{
 		socket.emit("CLIENT-SEND-LIGHT-ON",{Temp:"20",AR:"1"});
-		socket.emit("CLIENT-SEND-TEMP_HUM", [
+		/*socket.emit("CLIENT-SEND-TEMP_HUM", [
 		{
 			element: "Temperature",
 			value: 38
@@ -15,7 +15,7 @@ $(document).ready(function()
 		{
 			element: "Humidity",
 			value: 80
-		}]);
+		}]);*/
 	})
 	$("#btnLightOff").click(function()
 	{
