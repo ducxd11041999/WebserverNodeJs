@@ -5,7 +5,7 @@
   <meta chartset="utf-8">
   <title>Demo CE-232</title>
   <script src="jquery.js"></script>
-  <script src="http://192.168.1.8:80/socket.io/socket.io.js"></script>
+  <script src="http://192.168.0.106:80/socket.io/socket.io.js"></script>
   <script src="xuly.js"></script>
   <script src="index.js"></script>
   <link rel="stylesheet" type="text/css" href="layoutLogin.css"/>
@@ -27,17 +27,17 @@
           if(status=='1' || status == 1)
           {
               alert("Login Successfull");
-              window.location.href = "http://192.168.1.8:80/home";
+              window.location.href = "http://192.168.0.106:80/home";
           }
           else if ((status=='0' || status == 0))
           {
             alert("Login");
-            window.location.href = "http://192.168.1.8:80/login";
+            window.location.href = "http://192.168.0.106:80/login";
           }
           else if ((status=='-1' || status == -1))
           {
             alert("Incorrect Username or Password");
-            window.location.href = "http://192.168.1.8:80/login";
+            window.location.href = "http://192.168.0.106:80/login";
           }
           else
           {
@@ -59,7 +59,7 @@
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="button" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a  href="http://192.168.1.8:80/home">password?</a></span>
+      <span class="psw">Forgot <a  href="http://192.168.0.106:80/home">password?</a></span>
     </div>
   </form>
 </body>
