@@ -235,7 +235,6 @@
                 });
             io.sockets.emit("SERVER-SEND-TEMP_HUM",data);*/
         });
-
     })
     app.get("/", function(req , res)
     {
