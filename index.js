@@ -1,5 +1,5 @@
     
-   	const PORT = 80							//Đặt địa chỉ Port được mở ra để tạo ra chương trình mạng Socket Server
+   	const PORT = 3000						//Đặt địa chỉ Port được mở ra để tạo ra chương trình mạng Socket Server
     var express = require("express");
     var app = express();
     app.use(express.static("./public"));
@@ -236,6 +236,9 @@
             io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
 			
         });
+		socket.on("CLIENT-SEND-TEST", function(data){
+			 io.sockets.emit("SERVER-SEND-TEST", data);
+		});
 
     })
     app.get("/", function(req , res)
