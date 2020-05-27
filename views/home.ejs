@@ -1,0 +1,80 @@
+
+<! client >
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta chartset="utf-8">
+	<title>Demo CE-232</title>
+	<script src="jquery.js"></script>
+	<script src="http://23.101.29.47:5000/home/socket.io/socket.io.js"></script>
+	<script src="xuly.js"></script>
+	<script src="index.js"></script>
+	<link rel="stylesheet" type="text/css" href="layout.css"/>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<body>
+	<div id="wraper">
+		<div id="left">
+
+			<div id="boxTitle">STATUS</div>
+				<div id="lightMode"> LIGHT</div>	
+				<div id="fanMode"> FAN</div>
+			<div id="Notificate">NOTIFICATE</div>
+				<div id="idTemp"></div>
+				<div id="idHumidity"></div>
+				<div id="idPressure"></div>
+				<div id="warning">Warning :  Not thing aammmmmmmmaaaa</div>
+		</div>
+		<div id="middle">
+			<div id="sayHi"> HỆ THỐNG NHÚNG KHÔNG DÂY - CE232</div>
+			<div id="BUTTON">
+				<input type="button" id="btnLightOn" value="[LIGHT]-ON"/>
+				<input type="button" id="btnLightOff" value="[LIGHT]-OF"/>
+				<input type="button" id="btnFanOn" value="[FAN]-ON"/>
+				<input type="button" id="btnFanOff" value="[FAN]-OFF"/>
+			</div>
+			<div id="chart_div"></div>
+				<script type="text/javascript">
+					// Load google charts
+					google.charts.load('current', {'packages':['gauge']});
+				    google.charts.setOnLoadCallback(drawChart);
+				  	
+				    function drawChart() {
+				        var data = google.visualization.arrayToDataTable([
+				          ['Label', 'Value'],
+				          ['Temp', 0],
+				          ['Humidity', 0],
+				          ['Pressure', 0]
+				        ]);
+				        var options = {
+				          width: 400, height: 120,
+				          redFrom: 90, redTo: 100,
+				          yellowFrom:75, yellowTo: 90,
+				          minorTicks: 5
+				        };
+				        //var options1 = {'title':'My Average Day', 'width':400, 'height':400};
+
+				        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+				        chart.draw(data, options);
+				        
+
+				        // check time to update data
+				        setInterval(function() {
+				          data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+				          chart.draw(data, options);
+				        }, 13000);
+				        setInterval(function() {
+				        	data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+				         	chart.draw(data, options);
+				        }, 5000);
+				        
+				        setInterval(function() {
+				        	var temp = <%- temp%>
+				        	data.setValue(2, 1, 0+ Math.round(temp));
+				        	chart.draw(data, options);
+				        }, 100);
+				      }
+				</script>
+		</div>
+	</div>
+</body>
+</html>
