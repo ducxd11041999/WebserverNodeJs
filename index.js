@@ -120,7 +120,7 @@
         
     });
 
-    server.listen(PORT, function()
+    server.listen(PORT,'0.0.0.0', function()
     {
         //alert(process.env.PORT)
         console.log("connected")
@@ -216,8 +216,9 @@
                     element: "Humidity",
                     value: y_Number
                 }]
-            */
+            /*
             /*Update Value of sensor to data base*/
+			/*
             var conditon_t = {element:"Temperature"};
             var updateValue_t = {$set: {value : data[0].value}};
             dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
@@ -228,7 +229,9 @@
             dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
                     console.log("Value Humidity is update");
                 });
+			*/
             io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
+			
         });
 
     })
