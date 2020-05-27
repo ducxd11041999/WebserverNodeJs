@@ -221,14 +221,8 @@
                 }]
             /*
             /*Update Value of sensor to data base*/
-<<<<<<< HEAD
 			/*
             var conditon_t = {element:"Temperature"};
-=======
-            console.log("have a data")
-            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
-            /*var conditon_t = {element:"Temperature"};
->>>>>>> ebf17dae243f2b505dbe57116d3d04c289d07ca7
             var updateValue_t = {$set: {value : data[0].value}};
             dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
                     console.log("Value Temperature is update");
@@ -238,13 +232,9 @@
             dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
                     console.log("Value Humidity is update");
                 });
-<<<<<<< HEAD
 			*/
             io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
 			
-=======
-            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);*/
->>>>>>> ebf17dae243f2b505dbe57116d3d04c289d07ca7
         });
 
     })
