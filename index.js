@@ -1,5 +1,5 @@
     
-   	const PORT = 3000								//Đặt địa chỉ Port được mở ra để tạo ra chương trình mạng Socket Server
+   	const PORT = 80							//Đặt địa chỉ Port được mở ra để tạo ra chương trình mạng Socket Server
     var express = require("express");
     var app = express();
     app.use(express.static("./public"));
@@ -127,9 +127,12 @@
         console.log(ip.address())
     });										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
 
- 
+    server.on('listening', function() {
+        console.log('Express server started on port %s at %s', server.address().port, server.address().address);
+    });
     io.on("connection",function(socket)
     {
+        console.log("have a connection")
         MongoClient.connect(url_dbCtrlDevice, function(err, db) {
         if (err) throw err;
             dbo = db.db("local");
@@ -153,8 +156,8 @@
             //db.close();
         });
     });
-        console.log("Temperature: " + sensorDB[1].value)
-        console.log("flag log: "+ flag_login)
+        //console.log("Temperature: " + sensorDB[1].value)
+        //console.log("flag log: "+ flag_login)
         //console.log(ip.address())
         //console.log("Có người kết nối")
         io.sockets.emit("SERVER-SEND-BACKUP-DATA",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
@@ -218,20 +221,30 @@
                 }]
             /*
             /*Update Value of sensor to data base*/
+<<<<<<< HEAD
 			/*
             var conditon_t = {element:"Temperature"};
+=======
+            console.log("have a data")
+            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
+            /*var conditon_t = {element:"Temperature"};
+>>>>>>> ebf17dae243f2b505dbe57116d3d04c289d07ca7
             var updateValue_t = {$set: {value : data[0].value}};
             dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
                     console.log("Value Temperature is update");
                 });
-            var conditon_h = {element:"Humidity"};
+            var conditon_h = {element:"Husmidity"};
             var updateValue_h = {$set: {value : data[1].value}};
             dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
                     console.log("Value Humidity is update");
                 });
+<<<<<<< HEAD
 			*/
             io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
 			
+=======
+            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);*/
+>>>>>>> ebf17dae243f2b505dbe57116d3d04c289d07ca7
         });
 
     })
