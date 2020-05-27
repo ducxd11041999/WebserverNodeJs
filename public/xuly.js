@@ -1,4 +1,6 @@
-var socket = io("192.168.0.106:80");
+
+var socket = io("23.101.29.47:5000");
+
 var statusCtrl = [];
 var sensorRead = [];
 $(document).ready(function()
