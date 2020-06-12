@@ -24,6 +24,7 @@
     app.use(bodyParser.urlencoded({ extended: false }));
 
     /*Variable in server*/
+	var t = 0, h = 0;
     var current_name = "";
     var dbo;
     var userDB = [];
@@ -221,19 +222,25 @@
                 }]
             /*
             /*Update Value of sensor to data base*/
-			/*
-            var conditon_t = {element:"Temperature"};
-            var updateValue_t = {$set: {value : data[0].value}};
-            dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
-                    console.log("Value Temperature is update");
-                });
-            var conditon_h = {element:"Husmidity"};
-            var updateValue_h = {$set: {value : data[1].value}};
-            dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
-                    console.log("Value Humidity is update");
-                });
-			*/
-            io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
+			if(data.Temperature){
+				t = data.Temperature;
+				console.log(data.Temperature);
+				var conditon_t = {element:"Temperature"};
+				var updateValue_t = {$set: {value : parseFloat(data.Temperature)}};
+				dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
+						console.log("Value Temperature is update");
+					});
+			}
+			if(data.Humidity){
+				h = data.Humidity;
+				console.log(data.Humidity);// ok
+				var conditon_h = {element:"Humidity"};
+				var updateValue_h = {$set: {value :  parseFloat(data.Humidity)}};
+				dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
+						console.log("Value Humidity is update");
+					});
+			}
+            //io.sockets.emit("SERVER-SEND-TEMP_HUM",data);
 			
         });
 		socket.on("CLIENT-SEND-TEST", function(data){
@@ -267,8 +274,8 @@
             //console.log("setInterval");
             if(flag_login == true){
               res.render(path.join(__dirname + '/views/trangchu.ejs'), {temp:ttemp, name:current_name,
-                Temperature: sensorDB[1].value,
-                Humidity: sensorDB[0].value}); 
+                Temperature: t,
+                Humidity: h}); 
             }
             else
             {
