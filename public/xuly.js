@@ -8,16 +8,7 @@ $(document).ready(function()
 	//console.log("aaa");
 	$("#btnLightOn").click(function()
 	{
-		socket.emit("CLIENT-SEND-LIGHT-ON",{Temp:"20",AR:"1"});
-		/*socket.emit("CLIENT-SEND-TEMP_HUM", [
-		{
-			element: "Temperature",
-			value: 38
-		},
-		{
-			element: "Humidity",
-			value: 80
-		}]);*/
+		socket.emit("CLIENT-SEND-LIGHT-ON");
 	})
 	$("#btnLightOff").click(function()
 	{
@@ -62,7 +53,7 @@ socket.on("SERVER-SEND-LIGHT-ON", function(data)
 	//alert("Đã chọn hiệu ứng plan")
 	$("#lightMode").html("")
 	$("#lightMode").html("[LIGHT]-Status: ON ");
-	$("#idTemp").html("");
+	//$("#idTemp").html("");
 	//$("#chart_div").html("Temperature : "+ data.Temp);
 	//document.getElementById('chart_div').setAttribute('temp', 20);
 	//var con = document.getElementById('chart_div').setAttribute('temp');
@@ -135,10 +126,10 @@ socket.on("SERVER-SEND-BACKUP-SENSOR", function(data)
 	sensorRead = data;
 	//alert(sensorRead[0].Temperature);
 	$("#idTemp").html("");
-	$("#idTemp").html("Temperature: " + sensorRead[0].Temperature);
+	$("#idTemp").html("Temperature: " + sensorRead[1].Humidity);
 	$("#idHumidity").html("");
-	$("#idHumidity").html("Humidity: " + sensorRead[1].Humidity);
-	var x = sensorRead[0].Temperature;
+	$("#idHumidity").html("Humidity: " + sensorRead[0].Temperature);
+	var x =  sensorRead[1].Humidity;
 	switch(true)
 	{
 		case x < 20:
