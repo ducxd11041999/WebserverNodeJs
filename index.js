@@ -133,13 +133,13 @@
     });
     io.on("connection",function(socket)
     {
-        console.log("have a connection")
+        //console.log("have a connection")
         MongoClient.connect(url_dbCtrlDevice, function(err, db) {
         if (err) throw err;
             dbo = db.db("local");
             dbo.collection("store_datas").find({}).toArray(function(err, result) {
                 if (err) throw err;
-                    console.log("database device : " + result);
+                    //console.log("database device : " + result);
                     ctrlDB = result;
                     io.sockets.emit("SERVER-SEND-BACKUP-DEVICE",[{Light:ctrlDB[0].ctrl},{Fan:ctrlDB[1].ctrl}])
                     //db.close();
@@ -150,7 +150,7 @@
             dbo = db.db("local");
             dbo.collection("store_sensors").find({}).toArray(function(err, result) {
                 if (err) throw err;
-                console.log("database sensor : " + result);
+                //console.log("database sensor : " + result);
                 sensorDB = result;
                 io.sockets.emit("SERVER-SEND-BACKUP-SENSOR",[{Temperature:sensorDB[1].value},
                     {Humidity:sensorDB[0].value}])
@@ -224,7 +224,7 @@
             /*Update Value of sensor to data base*/
 			if(data.Temperature){
 				t = data.Temperature;
-				console.log(data.Temperature);
+				//console.log(data.Temperature);
 				var conditon_t = {element:"Temperature"};
 				var updateValue_t = {$set: {value : parseFloat(data.Temperature)}};
 				dbo.collection("store_sensors").updateOne(conditon_t, updateValue_t, function(err, res) {
@@ -232,10 +232,10 @@
 					});
 			}
 			if(data.Humidity){
-				h = data.Humidity;
-				console.log(data.Humidity);// ok
+				h = (data.Humidity + 20);
+				//console.log(data.Humidity);// ok
 				var conditon_h = {element:"Humidity"};
-				var updateValue_h = {$set: {value :  parseFloat(data.Humidity)}};
+				var updateValue_h = {$set: {value :  parseFloat(h)}};
 				dbo.collection("store_sensors").updateOne(conditon_h, updateValue_h, function(err, res) {
 						console.log("Value Humidity is update");
 					});
@@ -252,7 +252,7 @@
     {
             //console.log("setInterval");
             flag_login = false;
-            console.log("render Login");
+            //console.log("render Login");
             res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
             
     });
@@ -265,7 +265,7 @@
             dbo.collection("users").updateOne(conditon, updateStatus, function(err, res) {
                     console.log("Status update");
                 });
-            console.log("render Login");
+            //console.log("render Login");
             res.render(path.join(__dirname + '/views/Login.ejs'), {status:502});
             
     });
@@ -279,7 +279,7 @@
             }
             else
             {
-            console.log("render Login");
+            //console.log("render Login");
             res.render(path.join(__dirname + '/views/Login.ejs'), {status:0 });
         }
 
