@@ -2,11 +2,11 @@
 #include <SocketIOClient.h>
  
 SocketIOClient client;
-const char* ssid = "HuuDucXD";          //Tên mạng Wifi mà Socket server của bạn đang kết nối
-const char* password = "12345678";  //Pass mạng wifi ahihi, anh em rãnh thì share pass cho mình với.
+const char* ssid = "MQ_Network";          //Tên mạng Wifi mà Socket server của bạn đang kết nối
+const char* password = "1denmuoi1";  //Pass mạng wifi ahihi, anh em rãnh thì share pass cho mình với
  
-char host[] = "192.168.56.1";  //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
-int port = 3000;                  //Cổng dịch vụ socket server do chúng ta tạo!
+char host[] = "192.168.0.112";  //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+int port = 8000;                  //Cổng dịch vụ socket server do chúng ta tạo!
  
 //từ khóa extern: dùng để #include các biến toàn cục ở một số thư viện khác. Trong thư viện SocketIOClient có hai biến toàn cục
 // mà chúng ta cần quan tâm đó là
@@ -62,10 +62,12 @@ void loop()
     if (millis() - previousMillis > interval) {
         //lệnh:
         previousMillis = millis();
- 
+     
         //gửi sự kiện "atime" là một JSON chứa tham số message có nội dung là Time please?
          Serial.println("Send");
-        client.send("CLIENT-SEND-TEMP_HUM", "message", "Time please?");
+        String temp = String(12);
+        client.send("CLIENT-SEND-TEMP_HUM","Temperature", temp);
+        //client.send("CLIENT-SEND-TEMP_HUM","humidity", myString);
     }
  
     //Khi bắt được bất kỳ sự kiện nào thì chúng ta có hai tham số:
